@@ -1,8 +1,6 @@
-// models/user.js
-
 const mongoose = require('mongoose');
-// Опишем схему:
-const userSchema = new mongoose.Schema({
+
+const cardSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -16,19 +14,18 @@ const userSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    // required: true,
   },
   likes: {
-    type: [mongoose.Schema.Types.ObjectId], default: [],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user',
+    default: [],
   },
   createdAt: {
-      type: Date, default: Date.now
+    type: Date,
+    default: Date.now,
   }
-
-
 });
 
 // создаём модель и экспортируем её
-module.exports = mongoose.model('card', userSchema);
+module.exports = mongoose.model('card', cardSchema);
