@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+
 const ERROR_CODE = 400;
 const NOT_FOUND = 404;
 const SERVER_ERROR = 400;
@@ -18,7 +19,7 @@ module.exports.getCards = (req, res) => {
       } else {
         res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
       }
-    })
+    });
 };
 
 module.exports.createCard = (req, res) => {
@@ -26,7 +27,7 @@ module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner })
-    .then(card => res.send(card))
+    .then((card) => res.send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при создании карточки.' });
@@ -35,7 +36,7 @@ module.exports.createCard = (req, res) => {
       } else {
         res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
       }
-    })
+    });
 };
 
 module.exports.deleteCard = (req, res) => {
@@ -54,7 +55,7 @@ module.exports.deleteCard = (req, res) => {
       } else {
         res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
       }
-    })
+    });
 };
 
 module.exports.likeCard = (req, res) => {
@@ -76,8 +77,8 @@ module.exports.likeCard = (req, res) => {
       } else {
         res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
       }
-    })
-}
+    });
+};
 
 module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
@@ -98,5 +99,5 @@ module.exports.dislikeCard = (req, res) => {
       } else {
         res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
       }
-    })
-}
+    });
+};
