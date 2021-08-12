@@ -2,24 +2,12 @@ const Card = require('../models/card');
 
 const ERROR_CODE = 400;
 const NOT_FOUND = 404;
-const SERVER_ERROR = 400;
+const SERVER_ERROR = 500;
 
 module.exports.getCards = (req, res) => {
   Card.find({})
-    .then((card) => {
-      if (!card) {
-        res.status(NOT_FOUND).send({ message: 'Нет такой карточки' });
-        return;
-      }
-      res.send(card);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные' });
-      } else {
-        res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
-      }
-    });
+    .then((cards) => res.send({ cards }))
+    .catch(() => res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' }));
 };
 
 module.exports.createCard = (req, res) => {
@@ -31,8 +19,6 @@ module.exports.createCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE).send({ message: 'Переданы некорректные данные при создании карточки.' });
-      } else if (err.name === 'Error') {
-        res.status(NOT_FOUND).send({ message: 'Не удалось создать карточку' });
       } else {
         res.status(SERVER_ERROR).send({ message: 'Произошла ошибка' });
       }
