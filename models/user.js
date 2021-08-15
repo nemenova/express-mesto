@@ -17,6 +17,12 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
+    validate: {
+      validator(v) {
+        // eslint-disable-next-line no-useless-escape
+        return /https?\:\/\/(www\.)?\d?\D{1,}#?/.test(v);
+      },
+    },
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
   email: {
@@ -51,5 +57,6 @@ userSchema.statics.findUserByCredentials = function (email, password) {
         });
     });
 };
+
 // создаём модель и экспортируем её
 module.exports = mongoose.model('user', userSchema);
