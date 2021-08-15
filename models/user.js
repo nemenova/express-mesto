@@ -29,7 +29,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    validation: (email) => validator.isEmail(email),
+    validate: {
+      validator(email) {
+        return validator.isEmail(email);
+      },
+    },
   },
   password: {
     type: String,
@@ -38,6 +42,13 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 });
+function toJSON() {
+  const obj = this.toObject();
+  delete obj.password;
+  return obj;
+}
+
+userSchema.methods.toJSON = toJSON;
 
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {

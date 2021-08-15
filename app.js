@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 const { Joi, celebrate, errors } = require('celebrate');
 const userRoute = require('./routes/users');
@@ -17,20 +18,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-
+app.use(helmet());
 app.use(cookieParser());
-app.get('/posts', (req) => {
-  console.log(req.cookies.jwt); // достаём токен
-});
-
-// app.use((req, res, next) => {
-//   req.user = {
-//     _id: '610f768d99541551a754ac82',
-//   };
-
-//   next();
-// });
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -57,7 +46,7 @@ app.use('*', (req, res) => {
 });
 
 app.use(errors());
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500
   const { statusCode = 500, message } = err;
 
@@ -69,6 +58,7 @@ app.use((err, req, res) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
+  next();
 });
 
 app.listen(PORT, () => {
