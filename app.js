@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const userRoute = require('./routes/users');
 const cardRoute = require('./routes/cards');
+const { createUser, login } = require('./controllers/users');
+const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -20,16 +22,21 @@ app.get('/posts', (req) => {
   console.log(req.cookies.jwt); // достаём токен
 });
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '610f768d99541551a754ac82', // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
+// app.use((req, res, next) => {
+//   req.user = {
+//     _id: '610f768d99541551a754ac82',
+//   };
 
-  next();
-});
+//   next();
+// });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.post('/signin', login);
+app.post('/signup', createUser);
+
+app.use(auth);
 
 app.use('/users', userRoute);
 app.use('/cards', cardRoute);
