@@ -5,8 +5,7 @@
     },
     "extends": [
       "airbnb-base",
-        "eslint:recommended",
-        "plugin:react/recommended"
+        "eslint:recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,9 +14,6 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "plugins": [
-        "react"
-    ],
     "rules": {
       "no-underscore-dangle": [
         "error",

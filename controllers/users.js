@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
-const AuthError = require('../errors/AuthError');
 const ConflictError = require('../errors/ConflictError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -27,6 +27,7 @@ module.exports.getUserById = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы некорректные данные');
       }
+      next(err);
     })
     .catch(next);
 };
@@ -47,6 +48,8 @@ module.exports.createUser = (req, res, next) => {
         throw new ConflictError('Такой e-mail уже зарегистрирован');
       } else if (err.name === 'ValidationError') {
         throw new BadRequestError('Переданы некорректные данные');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -61,6 +64,7 @@ module.exports.getUser = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Переданы некорректные данные');
       }
+      next(err);
     })
     .catch(next);
 };
@@ -81,6 +85,8 @@ module.exports.updateProfile = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.name === 'CastError') {
         throw new BadRequestError('Нет пользователя с таким id');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -101,6 +107,8 @@ module.exports.updateAvatar = (req, res, next) => {
         throw new BadRequestError('Переданы некорректные данные');
       } else if (err.name === 'CastError') {
         throw new BadRequestError('Нет пользователя с таким id');
+      } else {
+        next(err);
       }
     })
     .catch(next);
@@ -120,7 +128,7 @@ module.exports.login = (req, res, next) => {
         .send({ token });
     })
     .catch(() => {
-      throw new AuthError('Неправильные почта или пароль');
+      throw new UnauthorizedError('Неправильные почта или пароль');
     })
     .catch(next);
 };
