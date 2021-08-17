@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator(v) {
-        validator.isURL({ v, require_protocol: true });
+        validator.isURL(v, { require_protocol: true });
         // eslint-disable-next-line no-useless-escape
         return /https?\:\/\/(www\.)?\d?\D{1,}#?/.test(v);
       },

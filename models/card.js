@@ -13,7 +13,7 @@ const cardSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(v) {
-        validator.isURL({ v, require_protocol: true });
+        validator.isURL(v, { require_protocol: true });
         // eslint-disable-next-line no-useless-escape
         return /https?\:\/\/(www\.)?\d?\D{1,}#?/.test(v);
       },
