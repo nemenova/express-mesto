@@ -2,7 +2,7 @@
 const Card = require('../models/card');
 const NotFoundError = require('../errors/NotFoundError');
 const BadRequestError = require('../errors/BadRequestError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
+const AuthError = require('../errors/AuthError');
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
@@ -38,7 +38,7 @@ module.exports.deleteCard = (req, res, next) => {
             res.send(result);
           });
       } else {
-        throw new UnauthorizedError('Нельзя удалять чужие карточки');
+        throw new AuthError('Нельзя удалять чужие карточки');
       }
     })
     .catch((err) => {
