@@ -9,6 +9,7 @@ const cardRoute = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 const app = express();
@@ -23,6 +24,7 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -48,6 +50,8 @@ app.use('/cards', cardRoute);
 app.use('*', () => {
   throw new NotFoundError('Запрашиваемый ресурс не найден.');
 });
+
+app.use(errorLogger);
 
 app.use(errors());
 app.use((err, req, res, next) => {
