@@ -1,9 +1,9 @@
-# Проект Mesto фронтенд + бэкенд
+# Mesto (backend)
 
-## Продолжение проекта Место    
-Фронтенда нет. Карточки добавляются и удаляются, лайки ставятся и убираются, профиль можно редактировать. Только фронтенда нет, поэтому посмотреть это все можно только в базах данных.
+## New version of Mesto project
+There is only backend part. You can add and delete cards, like and dislike cards, edit your profile.    
 
-## Запуск проекта
+## To start
 
-`npm run start` — запускает сервер   
-`npm run dev` — запускает сервер с hot-reload
+`npm run start` — starts server   
+`npm run dev` — starts server in hot-reload mode
